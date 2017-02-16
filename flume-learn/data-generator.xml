@@ -1,0 +1,29 @@
+<assembly>
+    <id>assembly</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <!--<dependencySet>
+            <includes>
+                <include>org.apache.spark:spark-streaming-kafka_2.10:*</include>
+                &lt;!&ndash;<include>eu.unicredit:hbase-rdd-0.7.0</include>&ndash;&gt;
+                <include>com.uniview.salut:salut-spark-solr-1.0</include>
+                <include>com.uniview.salut:salut-util-1.0</include>
+                <include>org.apache.hbase:hbase-client-0.98.6-hadoop2</include>
+                <include>org.apache.hbase:hbase-server-0.98.6-hadoop2</include>
+                <include>org.apache.hbase:hbase-common-0.98.6-hadoop2</include>
+                <include>net.sandrogrzicic:scalabuff-runtime_2.10</include>
+                <include>org.apache.solr:solr-solrj-5.3.1</include>
+            </includes>
+        </dependencySet>-->
+        <dependencySet>
+            <!--<useTransitiveDependencies>true</useTransitiveDependencies>-->
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <!--<outputDirectory>lib</outputDirectory>-->
+        </dependencySet>
+    </dependencySets>
+</assembly>
