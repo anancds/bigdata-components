@@ -19,11 +19,11 @@
             </includes>
         </dependencySet>-->
         <dependencySet>
-            <!--<useTransitiveDependencies>true</useTransitiveDependencies>-->
+            <useTransitiveDependencies>true</useTransitiveDependencies>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>true</unpack>
             <scope>runtime</scope>
-            <!--<outputDirectory>lib</outputDirectory>-->
+            <outputDirectory>lib</outputDirectory>
         </dependencySet>
     </dependencySets>
 </assembly>

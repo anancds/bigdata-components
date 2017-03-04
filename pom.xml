@@ -11,6 +11,8 @@
   <modules>
     <module>flume-learn</module>
     <module>hollow-learn</module>
+    <module>maven-learn</module>
+    <module>bigdata-assemblies</module>
   </modules>
 
 
@@ -28,6 +30,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>${assembly.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.6</version>
         </plugin>
       </plugins>
 

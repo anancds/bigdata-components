@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>bigdata-learn</artifactId>
+    <groupId>com.cds.bigdata</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>maven-learn</artifactId>
+
+  <profiles>
+    <profile>
+      <id>dist</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>tar</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="package.root" value="${project.basedir}/../package"/>
+                    <!--<property name="dist.root" value="${project.basedir}/target"/>-->
+                    <property name="package.dir" value="${package.root}/bigdata-${project.version}"/>
+                    <!--<property name="bigdata.base.package.dir" value="${project.basedir}/../flume-learn/target/flume-learn-${project.version}"/>-->
+
+                    <echo>UDE Distribution, packing...</echo>
+                    <echo>package.dir=${package.dir}</echo>
+
+                    <!-- Clean dirs -->
+                    <delete dir="${package.root}"/>
+                    <mkdir dir="${package.root}"/>
+                    <mkdir dir="${package.dir}"/>
+
+                    <!-- Copy Files -->
+                    <copy todir="${package.dir}">
+                      <!--<fileset dir="${bigdata.base.package.dir}"/>-->
+                      <fileset dir="${project.basedir}/src/main/">
+                        <exclude name="java"/>
+                        <exclude name="resources"/>
+                      </fileset>
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>tar</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <!--<property name="dist.root" value="${project.basedir}/target"/>-->
+                    <property name="package.root" value="${project.basedir}/../package"/>
+                    <echo>UDE Distribution, making tarball...</echo>
+                    <tar destfile="${package.root}/bigdata-${project.version}.tar">
+                      <tarfileset dir="${package.root}/bigdata-${project.version}" prefix="bigdata-${project.version}"/>
+                    </tar>
+                    <gzip destfile="${package.root}/bigdata-${project.version}.tar.gz" src="${package.root}/bigdata-${project.version}.tar"/>
+                    <delete file="${package.root}/bigdata-${project.version}.tar"/>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
+</project>
