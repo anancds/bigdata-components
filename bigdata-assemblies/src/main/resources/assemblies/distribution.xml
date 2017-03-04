@@ -15,22 +15,10 @@
       <outputDirectory>sbin</outputDirectory>
       <fileMode>0755</fileMode>
     </fileSet>
-    <!--<fileSet>-->
-      <!--<directory>src/main/webapp</directory>-->
-      <!--<outputDirectory>webapp</outputDirectory>-->
-    <!--</fileSet>-->
     <fileSet>
       <directory>src/main/conf</directory>
       <outputDirectory>conf</outputDirectory>
     </fileSet>
-    <!--<fileSet>-->
-      <!--<directory>src/main/storage</directory>-->
-      <!--<outputDirectory>storage</outputDirectory>-->
-    <!--</fileSet>-->
-    <!--<fileSet>-->
-      <!--<directory>src/main/webui</directory>-->
-      <!--<outputDirectory>webui</outputDirectory>-->
-    <!--</fileSet>-->
   </fileSets>
   <dependencySets>
     <dependencySet>

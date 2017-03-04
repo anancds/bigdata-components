@@ -11,6 +11,13 @@
 
   <artifactId>bigdata-assemblies</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.flume</groupId>
+      <artifactId>flume-ng-configuration</artifactId>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>

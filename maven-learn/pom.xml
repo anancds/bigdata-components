@@ -37,7 +37,7 @@
                     <property name="package.root" value="${project.basedir}/../package"/>
                     <!--<property name="dist.root" value="${project.basedir}/target"/>-->
                     <property name="package.dir" value="${package.root}/bigdata-${project.version}"/>
-                    <!--<property name="bigdata.base.package.dir" value="${project.basedir}/../flume-learn/target/flume-learn-${project.version}"/>-->
+                    <property name="bigdata.base.package.dir" value="${project.basedir}/../bigdata-assemblies/target/bigdata-assemblies-${project.version}"/>
 
                     <echo>UDE Distribution, packing...</echo>
                     <echo>package.dir=${package.dir}</echo>
@@ -49,7 +49,7 @@
 
                     <!-- Copy Files -->
                     <copy todir="${package.dir}">
-                      <!--<fileset dir="${bigdata.base.package.dir}"/>-->
+                      <fileset dir="${bigdata.base.package.dir}"/>
                       <fileset dir="${project.basedir}/src/main/">
                         <exclude name="java"/>
                         <exclude name="resources"/>
