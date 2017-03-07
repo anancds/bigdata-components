@@ -13,6 +13,7 @@
     <module>hollow-learn</module>
     <module>maven-learn</module>
     <module>bigdata-assemblies</module>
+    <module>quartz-learn</module>
   </modules>
 
 
@@ -20,6 +21,7 @@
     <flume.version>1.7.0</flume.version>
     <hollow.version>2.1.0</hollow.version>
     <assembly.plugin.version>2.4</assembly.plugin.version>
+    <quartz.version>2.2.1</quartz.version>
   </properties>
 
 
@@ -62,6 +64,21 @@
         <groupId>com.netflix.hollow</groupId>
         <artifactId>hollow</artifactId>
         <version>${hollow.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.quartz-scheduler</groupId>
+        <artifactId>quartz</artifactId>
+        <version>${quartz.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.quartz-scheduler</groupId>
+        <artifactId>quartz-jobs</artifactId>
+        <version>${quartz.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.5</version>
       </dependency>
 
     </dependencies>
