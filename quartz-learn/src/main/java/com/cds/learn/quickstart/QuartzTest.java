@@ -34,8 +34,10 @@ public class QuartzTest {
     sched.start();
 
     // define the job and tie it to our HelloJob class
-    JobDetail job = newJob(HelloJob.class)
+    JobDetail job = newJob(DumbJob.class)
         .withIdentity("myJob", "group1")
+        .usingJobData("jobSays", "Hello World!")
+        .usingJobData("myFloatValue", 3.141f)
         .build();
 
     // Trigger the job to run now, and then every 40 seconds
