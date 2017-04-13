@@ -15,6 +15,7 @@
     <module>bigdata-assemblies</module>
     <module>quartz-learn</module>
     <module>regular-expression-learn</module>
+    <module>jopt-learn</module>
   </modules>
 
 
@@ -80,6 +81,12 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.7.5</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sf.jopt-simple</groupId>
+        <artifactId>jopt-simple</artifactId>
+        <version>5.0.3</version>
       </dependency>
 
     </dependencies>
