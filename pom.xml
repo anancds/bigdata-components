@@ -16,6 +16,7 @@
     <module>quartz-learn</module>
     <module>regular-expression-learn</module>
     <module>jopt-learn</module>
+    <module>guice-learn</module>
   </modules>
 
 
@@ -88,7 +89,11 @@
         <artifactId>jopt-simple</artifactId>
         <version>5.0.3</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice</artifactId>
+        <version>4.1.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
