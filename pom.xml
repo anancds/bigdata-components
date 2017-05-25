@@ -19,6 +19,7 @@
     <module>guice-learn</module>
     <module>rxjava-learn</module>
     <module>mesos-learn</module>
+    <module>metrics-learn</module>
   </modules>
 
 
@@ -28,6 +29,7 @@
     <assembly.plugin.version>2.4</assembly.plugin.version>
     <quartz.version>2.2.1</quartz.version>
     <rxjava.version>2.0.9</rxjava.version>
+    <metrics.version>3.2.2</metrics.version>
   </properties>
 
 
@@ -107,7 +109,18 @@
         <artifactId>mesos</artifactId>
         <version>1.2.0</version>
       </dependency>
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-healthchecks</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
     </dependencies>
+
   </dependencyManagement>
 
 

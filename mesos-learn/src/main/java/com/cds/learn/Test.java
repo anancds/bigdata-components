@@ -6,12 +6,7 @@ import java.util.List;
 import sun.nio.ch.DirectBuffer;
 
 /**
- * <p></p>
- * author chendongsheng5 2017/5/15 18:43
- * version V1.0
- * modificationHistory =========================逻辑或功能性重大变更记录
- * modify by user: chendongsheng5 2017/5/15 18:43
- * modify by reason:{方法名}:{原因}
+ * 用来测试cgroup
  */
 public class Test {
 
