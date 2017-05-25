@@ -20,6 +20,7 @@
     <module>rxjava-learn</module>
     <module>mesos-learn</module>
     <module>metrics-learn</module>
+    <module>chill-learn</module>
   </modules>
 
 
