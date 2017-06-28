@@ -6,27 +6,17 @@
     <artifactId>bigdata-learn</artifactId>
     <groupId>com.cds.bigdata</groupId>
     <version>1.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>rxjava-learn</artifactId>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <artifactId>tracer-learn</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>io.reactivex.rxjava2</groupId>
-      <artifactId>rxjava</artifactId>
+      <groupId>org.zalando</groupId>
+      <artifactId>tracer-core</artifactId>
+      <version>0.11.2</version>
     </dependency>
   </dependencies>
 

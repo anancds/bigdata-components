@@ -21,6 +21,9 @@
     <module>mesos-learn</module>
     <module>metrics-learn</module>
     <module>chill-learn</module>
+    <module>guava-learn</module>
+    <module>netty-learn</module>
+    <module>awesome-java/tracer-learn</module>
   </modules>
 
 
