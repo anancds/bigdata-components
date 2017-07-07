@@ -24,6 +24,7 @@
     <module>guava-learn</module>
     <module>netty-learn</module>
     <module>awesome-java/tracer-learn</module>
+    <module>jobscheduler-learn</module>
   </modules>
 
 
@@ -34,6 +35,10 @@
     <quartz.version>2.2.1</quartz.version>
     <rxjava.version>2.0.9</rxjava.version>
     <metrics.version>3.2.2</metrics.version>
+    <httpclient.version>4.4.1</httpclient.version>
+    <httpasyncclient.version>4.1.2</httpasyncclient.version>
+    <slf4j.version>1.7.22</slf4j.version>
+    <compileSource>1.8</compileSource>
   </properties>
 
 
@@ -51,8 +56,22 @@
           <version>1.6</version>
         </plugin>
       </plugins>
-
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${compileSource}</source>
+          <target>${compileSource}</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>false</showDeprecation>
+          <compilerArgument>-Xlint:-options</compilerArgument>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
   <dependencyManagement>
     <dependencies>
@@ -123,9 +142,40 @@
         <artifactId>metrics-healthchecks</artifactId>
         <version>${metrics.version}</version>
       </dependency>
+
+      <!--httpclient-->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpmime</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpasyncclient</artifactId>
+        <version>${httpasyncclient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+
     </dependencies>
 
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
 
 
 </project>
