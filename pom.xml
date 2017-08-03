@@ -25,6 +25,7 @@
     <module>netty-learn</module>
     <module>awesome-java/tracer-learn</module>
     <module>jobscheduler-learn</module>
+    <module>sparkSql-learn</module>
   </modules>
 
 
