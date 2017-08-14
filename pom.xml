@@ -23,9 +23,9 @@
     <module>chill-learn</module>
     <module>guava-learn</module>
     <module>netty-learn</module>
-    <module>awesome-java/tracer-learn</module>
     <module>jobscheduler-learn</module>
     <module>sparkSql-learn</module>
+    <module>apache-learn</module>
   </modules>
 
 
