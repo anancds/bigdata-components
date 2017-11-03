@@ -26,7 +26,7 @@ public class JdbcTest {
         str += meta.getColumnTypeName(i) + " ";
         str += rs.getString(i) + " ";
         if (i == 8) {
-//          System.out.println(rs.getFloat(i));
+          System.out.println(rs.getFloat(i));
         }
       }
       System.out.println("\t" + str);
