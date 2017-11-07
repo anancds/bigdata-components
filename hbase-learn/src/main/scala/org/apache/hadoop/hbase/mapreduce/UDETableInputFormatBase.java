@@ -188,6 +188,8 @@ public abstract class UDETableInputFormatBase
         try {
           trr.close();
         } catch (Exception e){
+          LOG.error("Close UDETableRecordReader failed, for", e);
+        }finally {
           closeTable();
         }
       }
