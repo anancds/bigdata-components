@@ -21,9 +21,19 @@ public class GetSplitTest {
       return resultSplitKeys;
     }
 
-    for (byte a : start) {
-//      System.out.println(isNumeric(a));
-      System.out.println(isAlphabet(a));
+    List<Integer> sizes = new ArrayList<>();
+    int res = 0;
+    if (start.length == end.length) {
+
+      for (int i = 0; i < start.length; i++) {
+        sizes.add(end[i] - start[i]);
+//        if ((end[i] - start[i]) > )
+      }
+      for (Integer size : sizes) {
+
+      }
+
+
     }
 
     // 48 为字符串0
@@ -87,6 +97,14 @@ public class GetSplitTest {
     return res;
   }
 
+  private static boolean isValidCharacter(byte a) {
+    boolean res = false;
+    if (isNumeric(a) || isAlphabet(a)) {
+      res = true;
+    }
+    return res;
+  }
+
   private static byte[] buildKeyByRule(int keyValue, byte[] souceByte, int startSplitPoint,
       int splitStep) {
     // 转换字符串
@@ -143,13 +161,27 @@ public class GetSplitTest {
   }
 
   public static void main(String[] args) {
-    byte[] a = Bytes.toBytes("0110");
-    byte[] b = Bytes.toBytes("0440");
+    byte[] a = Bytes.toBytes("011a");
+    byte[] c = new byte[4];
+    for (int i = 0; i < a.length; i++) {
+      c[i] = (byte) (a[i] + 1);
+    }
+    System.out.println(Bytes.toString(c));
+    byte[] b = Bytes.toBytes("144c");
+    System.out.println(Bytes.toString(a));
+    System.out.println(Bytes.toString(b));
+    String s = Bytes.toString(a);
+    System.out.println((byte) (a[0] + 1));
     List<byte[]> bytes = getSplitKeyValues(a, b, 1, 3, 10);
 
     for (byte[] bytes1 : bytes) {
       System.out.println(Bytes.toString(bytes1));
     }
+
+    System.out.println();
+    byte test = Byte.parseByte("99");
+    System.out.println(test);
+//    System.out.println(Byte.parseByte(Byte.toUnsignedInt(test) + 1));
   }
 
 }
