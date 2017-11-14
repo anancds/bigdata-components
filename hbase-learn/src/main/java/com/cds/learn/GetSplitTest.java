@@ -1,6 +1,7 @@
 package com.cds.learn;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.hadoop.hbase.util.Bytes;
 
@@ -8,10 +9,19 @@ public class GetSplitTest {
 
   public static final byte ZERO_BYTE_VALUE = (byte) 48;
   public static final byte NINE_BYTE_VALUE = (byte) 57;
+  public static final byte A_BYTE_VALUE = (byte) 65;
+  public static final byte Z_BYTE_VALUE = (byte) 122;
 
   public static List<byte[]> getSplitKeyValues(byte[] start, byte[] end, int startSplitPoint,
       int splitStep, int plateNum) {
     List<byte[]> resultSplitKeys = new ArrayList<byte[]>();
+
+    resultSplitKeys.sort(new Comparator<byte[]>() {
+      @Override
+      public int compare(byte[] o1, byte[] o2) {
+        return 0;
+      }
+    });
 
     if (start.length == 0 && end.length == 0) {
       return resultSplitKeys;
@@ -21,19 +31,135 @@ public class GetSplitTest {
       return resultSplitKeys;
     }
 
-    List<Integer> sizes = new ArrayList<>();
-    int res = 0;
+    List<Integer> byteSizes = new ArrayList<>();
+//    int res = 1;
     if (start.length == end.length) {
 
       for (int i = 0; i < start.length; i++) {
-        sizes.add(end[i] - start[i]);
-//        if ((end[i] - start[i]) > )
-      }
-      for (Integer size : sizes) {
-
+        byteSizes.add(end[i] - start[i] - 1);
       }
 
+//      for (Integer byteSize : byteSizes) {
+//        if (byteSize > 0) {
+//          res *= byteSize;
+//        }
+//      }
 
+      for (int i = 0; i < byteSizes.size(); i++) {
+        int len = byteSizes.get(i);
+        for (int j = 0; j < len; j++) {
+          byte[] temp = new byte[byteSizes.size()];
+          for (int k = 0; k < byteSizes.size(); k++) {
+            if (i == k) {
+              if (!isValidCharacter(start[k])) {
+                temp[k] = start[k];
+              } else {
+                temp[k] = (byte) (start[k] + 1);
+                byteSizes.set(k, byteSizes.get(k) - 1);
+              }
+            } else {
+              temp[k] = start[k];
+            }
+          }
+          start = temp;
+          resultSplitKeys.add(temp);
+        }
+      }
+
+      for (byte[] a : resultSplitKeys) {
+        System.out.println(Bytes.toString(a));
+      }
+
+    } else if (start.length > end.length) {
+      byte[] tempRes = new byte[start.length];
+      for (int i = 0; i < start.length; i++) {
+        if (i < end.length) {
+          tempRes[i] = end[i];
+        } else {
+          if (isAlphabet(start[i])) {
+            tempRes[i] = Z_BYTE_VALUE;
+          } else if (isNumeric(start[i])) {
+            tempRes[i] = NINE_BYTE_VALUE;
+          } else {
+            tempRes[i] = start[i];
+          }
+        }
+      }
+
+      for (int i = 0; i < start.length; i++) {
+        byteSizes.add(tempRes[i] - start[i] - 1);
+      }
+
+      for (int i = 0; i < byteSizes.size(); i++) {
+        int len = byteSizes.get(i);
+        for (int j = 0; j < len; j++) {
+          byte[] temp = new byte[byteSizes.size()];
+          for (int k = 0; k < byteSizes.size(); k++) {
+            if (i == k) {
+              if (!isValidCharacter(start[k])) {
+                temp[k] = start[k];
+              } else {
+                temp[k] = (byte) (start[k] + 1);
+                byteSizes.set(k, byteSizes.get(k) - 1);
+              }
+            } else {
+              temp[k] = start[k];
+            }
+          }
+          start = temp;
+          resultSplitKeys.add(temp);
+        }
+      }
+
+      for (byte[] a : resultSplitKeys) {
+        System.out.println(Bytes.toString(a));
+      }
+
+
+    } else if (start.length < end.length) {
+      byte[] tempRes = new byte[end.length];
+      for (int i = 0; i < end.length; i++) {
+        if (i < start.length) {
+          tempRes[i] = start[i];
+        } else {
+          if (isAlphabet(end[i])) {
+            tempRes[i] = A_BYTE_VALUE;
+          } else if (isNumeric(end[i])) {
+            tempRes[i] = ZERO_BYTE_VALUE;
+          } else {
+            tempRes[i] = end[i];
+          }
+        }
+      }
+
+      for (int i = 0; i < end.length; i++) {
+        byteSizes.add(end[i] - tempRes[i] - 1);
+      }
+
+      for (int i = 0; i < byteSizes.size(); i++) {
+        int len = byteSizes.get(i);
+        for (int j = 0; j < len; j++) {
+          byte[] temp = new byte[byteSizes.size()];
+          for (int k = 0; k < byteSizes.size(); k++) {
+            if (i == k) {
+              if (!isValidCharacter(tempRes[k])) {
+                temp[k] = tempRes[k];
+              } else {
+                temp[k] = (byte) (tempRes[k] + 1);
+                byteSizes.set(k, byteSizes.get(k) - 1);
+              }
+            } else {
+              temp[k] = tempRes[k];
+            }
+          }
+          tempRes = temp;
+          resultSplitKeys.add(temp);
+        }
+      }
+
+      for (byte[] a : resultSplitKeys) {
+        System.out.println(Bytes.toString(a));
+      }
     }
 
     // 48 为字符串0
@@ -161,27 +287,26 @@ public class GetSplitTest {
   }
 
   public static void main(String[] args) {
-    byte[] a = Bytes.toBytes("011a");
-    byte[] c = new byte[4];
+//    byte[] a = Bytes.toBytes("1-bcd");
+//    byte[] a = Bytes.toBytes("1-bcd");
+    byte[] a = Bytes.toBytes("a");
+    byte[] c = new byte[5];
     for (int i = 0; i < a.length; i++) {
       c[i] = (byte) (a[i] + 1);
     }
     System.out.println(Bytes.toString(c));
-    byte[] b = Bytes.toBytes("144c");
+//    byte[] b = Bytes.toBytes("1-efg");
+//    byte[] b = Bytes.toBytes("2");
+    byte[] b = Bytes.toBytes("bcc");
     System.out.println(Bytes.toString(a));
     System.out.println(Bytes.toString(b));
     String s = Bytes.toString(a);
     System.out.println((byte) (a[0] + 1));
     List<byte[]> bytes = getSplitKeyValues(a, b, 1, 3, 10);
 
-    for (byte[] bytes1 : bytes) {
-      System.out.println(Bytes.toString(bytes1));
-    }
-
     System.out.println();
     byte test = Byte.parseByte("99");
     System.out.println(test);
-//    System.out.println(Byte.parseByte(Byte.toUnsignedInt(test) + 1));
   }
 
 }
