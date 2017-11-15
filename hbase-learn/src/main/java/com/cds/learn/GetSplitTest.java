@@ -1,6 +1,7 @@
 package com.cds.learn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -11,64 +12,51 @@ public class GetSplitTest {
   public static final byte NINE_BYTE_VALUE = (byte) 57;
   public static final byte A_BYTE_VALUE = (byte) 65;
   public static final byte Z_BYTE_VALUE = (byte) 122;
+  public static int res = 0;
+  public static List<Integer> byteSizes = new ArrayList<>();
+
+  public static List<Byte> startA = new ArrayList<>();
+  public static List<Byte> endA = new ArrayList<>();
+
+  public static void addLastChar(int plateNum) {
+    while (res < plateNum - 1) {
+      startA.add(A_BYTE_VALUE);
+      endA.add(Z_BYTE_VALUE);
+      res += 56;
+      byteSizes.add(56);
+    }
+  }
 
   public static List<byte[]> getSplitKeyValues(byte[] start, byte[] end, int startSplitPoint,
       int splitStep, int plateNum) {
-    List<byte[]> resultSplitKeys = new ArrayList<byte[]>();
-
-    resultSplitKeys.sort(new Comparator<byte[]>() {
-      @Override
-      public int compare(byte[] o1, byte[] o2) {
-        return 0;
-      }
-    });
+    List<byte[]> resultSplitKeys = new ArrayList<>();
 
     if (start.length == 0 && end.length == 0) {
       return resultSplitKeys;
     }
-    // 拆分块数 小于1 不拆分
-    if (plateNum < 1) {
+    // 拆分块数小于2 不拆分
+    if (plateNum < 2) {
       return resultSplitKeys;
     }
 
     List<Integer> byteSizes = new ArrayList<>();
-//    int res = 1;
+
+    List<Byte> startA = new ArrayList<>();
+    List<Byte> endA = new ArrayList<>();
     if (start.length == end.length) {
-
       for (int i = 0; i < start.length; i++) {
-        byteSizes.add(end[i] - start[i] - 1);
-      }
-
-//      for (Integer byteSize : byteSizes) {
-//        if (byteSize > 0) {
-//          res *= byteSize;
-//        }
-//      }
-
-      for (int i = 0; i < byteSizes.size(); i++) {
-        int len = byteSizes.get(i);
-        for (int j = 0; j < len; j++) {
-          byte[] temp = new byte[byteSizes.size()];
-          for (int k = 0; k < byteSizes.size(); k++) {
-            if (i == k) {
-              if (!isValidCharacter(start[k])) {
-                temp[k] = start[k];
-              } else {
-                temp[k] = (byte) (start[k] + 1);
-                byteSizes.set(k, byteSizes.get(k) - 1);
-              }
-            } else {
-              temp[k] = start[k];
-            }
-          }
-          start = temp;
-          resultSplitKeys.add(temp);
+        int temp = end[i] - start[i] - 1;
+        if (temp > 0 && res < (plateNum - 1)) {
+          res += temp;
+          byteSizes.add(temp);
+        } else {
+          byteSizes.add(0);
         }
+        startA.add(start[i]);
+        endA.add(end[i]);
       }
 
-      for (byte[] a : resultSplitKeys) {
-        System.out.println(Bytes.toString(a));
-      }
+      addLastChar(plateNum);
 
     } else if (start.length > end.length) {
       byte[] tempRes = new byte[start.length];
@@ -87,35 +75,19 @@ public class GetSplitTest {
       }
 
       for (int i = 0; i < start.length; i++) {
-        byteSizes.add(tempRes[i] - start[i] - 1);
-      }
-
-      for (int i = 0; i < byteSizes.size(); i++) {
-        int len = byteSizes.get(i);
-        for (int j = 0; j < len; j++) {
-          byte[] temp = new byte[byteSizes.size()];
-          for (int k = 0; k < byteSizes.size(); k++) {
-            if (i == k) {
-              if (!isValidCharacter(start[k])) {
-                temp[k] = start[k];
-              } else {
-                temp[k] = (byte) (start[k] + 1);
-                byteSizes.set(k, byteSizes.get(k) - 1);
-              }
-            } else {
-              temp[k] = start[k];
-            }
-          }
-          start = temp;
-          resultSplitKeys.add(temp);
+        int temp = tempRes[i] - start[i] - 1;
+        if (temp > 0 && res < (plateNum - 1)) {
+          res += temp;
+          byteSizes.add(temp);
+        } else {
+          byteSizes.add(0);
         }
+
+        startA.add(start[i]);
+        endA.add(end[i]);
       }
 
-      for (byte[] a : resultSplitKeys) {
-        System.out.println(Bytes.toString(a));
-      }
-
-
+      addLastChar(plateNum);
     } else if (start.length < end.length) {
       byte[] tempRes = new byte[end.length];
       for (int i = 0; i < end.length; i++) {
@@ -133,34 +105,160 @@ public class GetSplitTest {
       }
 
       for (int i = 0; i < end.length; i++) {
-        byteSizes.add(end[i] - tempRes[i] - 1);
-      }
-
-      for (int i = 0; i < byteSizes.size(); i++) {
-        int len = byteSizes.get(i);
-        for (int j = 0; j < len; j++) {
-          byte[] temp = new byte[byteSizes.size()];
-          for (int k = 0; k < byteSizes.size(); k++) {
-            if (i == k) {
-              if (!isValidCharacter(tempRes[k])) {
-                temp[k] = tempRes[k];
-              } else {
-                temp[k] = (byte) (tempRes[k] + 1);
-                byteSizes.set(k, byteSizes.get(k) - 1);
-              }
-            } else {
-              temp[k] = tempRes[k];
-            }
-          }
-          tempRes = temp;
-          resultSplitKeys.add(temp);
+        int temp = end[i] - tempRes[i] - 1;
+        if (temp > 0 && res < (plateNum - 1)) {
+          res += temp;
+          byteSizes.add(temp);
+        } else {
+          byteSizes.add(0);
         }
-      }
 
-      for (byte[] a : resultSplitKeys) {
-        System.out.println(Bytes.toString(a));
+        startA.add(tempRes[i]);
+        endA.add(end[i]);
+      }
+      addLastChar(plateNum);
+
+    }
+
+    byte[] aa = new byte[startA.size()];
+    for (int i = 0; i < startA.size(); i++) {
+      aa[i] = startA.get(i);
+    }
+    for (int i = 0; i < byteSizes.size(); i++) {
+      int len = byteSizes.get(i);
+      for (int j = 0; j < len; j++) {
+        byte[] temp = new byte[aa.length];
+        for (int k = 0; k < aa.length; k++) {
+          if (i == k) {
+            temp[k] = (byte) (aa[k] + 1);
+            byteSizes.set(k, byteSizes.get(k) - 1);
+          } else {
+            temp[k] = startA.get(k);
+          }
+        }
+        aa = temp;
+        if (resultSplitKeys.size() >= (plateNum -1)) {
+          break;
+        }
+        resultSplitKeys.add(temp);
       }
     }
+
+    for (byte[] a : resultSplitKeys) {
+      System.out.println(Bytes.toString(a));
+    }
+
+//    if (start.length == end.length) {
+//
+//      for (int i = 0; i < start.length; i++) {
+//        byteSizes.add(end[i] - start[i] - 1);
+//      }
+//
+//      for (int i = 0; i < byteSizes.size(); i++) {
+//        int len = byteSizes.get(i);
+//        for (int j = 0; j < len; j++) {
+//          byte[] temp = new byte[byteSizes.size()];
+//          for (int k = 0; k < byteSizes.size(); k++) {
+//            if (i == k) {
+//              if (!isValidCharacter(start[k])) {
+//                temp[k] = start[k];
+//              } else {
+//                temp[k] = (byte) (start[k] + 1);
+//                byteSizes.set(k, byteSizes.get(k) - 1);
+//              }
+//            } else {
+//              temp[k] = start[k];
+//            }
+//          }
+//          start = temp;
+//          resultSplitKeys.add(temp);
+//        }
+//      }
+//
+//      for (byte[] a : resultSplitKeys) {
+//        System.out.println(Bytes.toString(a));
+//      }
+//
+//    } else if (start.length > end.length) {
+//      byte[] tempRes = new byte[start.length];
+//      for (int i = 0; i < start.length; i++) {
+//        if (i < end.length) {
+//          tempRes[i] = end[i];
+//        } else {
+//          if (isAlphabet(start[i])) {
+//            tempRes[i] = Z_BYTE_VALUE;
+//          } else if (isNumeric(start[i])) {
+//            tempRes[i] = NINE_BYTE_VALUE;
+//          } else {
+//            tempRes[i] = start[i];
+//          }
+//        }
+//      }
+//
+//      for (int i = 0; i < start.length; i++) {
+//        byteSizes.add(tempRes[i] - start[i] - 1);
+//      }
+//
+//      for (int i = 0; i < byteSizes.size(); i++) {
+//        int len = byteSizes.get(i);
+//        for (int j = 0; j < len; j++) {
+//          byte[] temp = new byte[byteSizes.size()];
+//          for (int k = 0; k < byteSizes.size(); k++) {
+//            if (i == k) {
+//              temp[k] = (byte) (start[k] + 1);
+//              byteSizes.set(k, byteSizes.get(k) - 1);
+//            } else {
+//              temp[k] = start[k];
+//            }
+//          }
+//          start = temp;
+//          resultSplitKeys.add(temp);
+//        }
+//      }
+//      for (byte[] a : resultSplitKeys) {
+//        System.out.println(Bytes.toString(a));
+//      }
+//    } else if (start.length < end.length) {
+//      byte[] tempRes = new byte[end.length];
+//      for (int i = 0; i < end.length; i++) {
+//        if (i < start.length) {
+//          tempRes[i] = start[i];
+//        } else {
+//          if (isAlphabet(end[i])) {
+//            tempRes[i] = A_BYTE_VALUE;
+//          } else if (isNumeric(end[i])) {
+//            tempRes[i] = ZERO_BYTE_VALUE;
+//          } else {
+//            tempRes[i] = end[i];
+//          }
+//        }
+//      }
+//
+//      for (int i = 0; i < end.length; i++) {
+//        byteSizes.add(end[i] - tempRes[i] - 1);
+//      }
+//
+//      for (int i = 0; i < byteSizes.size(); i++) {
+//        int len = byteSizes.get(i);
+//        for (int j = 0; j < len; j++) {
+//          byte[] temp = new byte[byteSizes.size()];
+//          for (int k = 0; k < byteSizes.size(); k++) {
+//            if (i == k) {
+//              temp[k] = (byte) (tempRes[k] + 1);
+//              byteSizes.set(k, byteSizes.get(k) - 1);
+//            } else {
+//              temp[k] = tempRes[k];
+//            }
+//          }
+//          tempRes = temp;
+//          resultSplitKeys.add(temp);
+//        }
+//      }
+//
+//      for (byte[] a : resultSplitKeys) {
+//        System.out.println(Bytes.toString(a));
+//      }
+//    }
 
     // 48 为字符串0
     byte[] startCalValue = cutBytes(start, startSplitPoint, splitStep, ZERO_BYTE_VALUE);
@@ -286,27 +384,34 @@ public class GetSplitTest {
     return resultByte;
   }
 
+  private static int calculateSplitPlateTimes(long regionNum, long splitThreshold) {
+    int plateNum = new Double(regionNum / splitThreshold).intValue();
+    if (regionNum % splitThreshold != 0) {
+      plateNum++;
+    }
+    return plateNum;
+  }
+
   public static void main(String[] args) {
+
+    System.out.println(calculateSplitPlateTimes(10, 11));
 //    byte[] a = Bytes.toBytes("1-bcd");
 //    byte[] a = Bytes.toBytes("1-bcd");
     byte[] a = Bytes.toBytes("a");
+//    byte[] a = Bytes.toBytes("ab");
     byte[] c = new byte[5];
     for (int i = 0; i < a.length; i++) {
       c[i] = (byte) (a[i] + 1);
     }
-    System.out.println(Bytes.toString(c));
 //    byte[] b = Bytes.toBytes("1-efg");
 //    byte[] b = Bytes.toBytes("2");
     byte[] b = Bytes.toBytes("bcc");
-    System.out.println(Bytes.toString(a));
-    System.out.println(Bytes.toString(b));
+//    byte[] b = Bytes.toBytes("cd");
     String s = Bytes.toString(a);
-    System.out.println((byte) (a[0] + 1));
-    List<byte[]> bytes = getSplitKeyValues(a, b, 1, 3, 10);
+    int p = 10;
+    List<byte[]> bytes = getSplitKeyValues(a, b, 0, 3, p);
 
-    System.out.println();
-    byte test = Byte.parseByte("99");
-    System.out.println(test);
+
   }
 
 }
