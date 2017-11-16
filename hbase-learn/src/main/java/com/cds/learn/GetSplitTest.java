@@ -1,8 +1,6 @@
 package com.cds.learn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import org.apache.hadoop.hbase.util.Bytes;
 
@@ -27,38 +25,23 @@ public class GetSplitTest {
     }
   }
 
-  public static List<byte[]> getSplitKeyValues(byte[] start, byte[] end, int startSplitPoint,
-      int splitStep, int plateNum) {
-    List<byte[]> resultSplitKeys = new ArrayList<>();
-
-    if (start.length == 0 && end.length == 0) {
-      return resultSplitKeys;
-    }
-    // 拆分块数小于2 不拆分
-    if (plateNum < 2) {
-      return resultSplitKeys;
-    }
-
-    List<Integer> byteSizes = new ArrayList<>();
-
-    List<Byte> startA = new ArrayList<>();
-    List<Byte> endA = new ArrayList<>();
-    if (start.length == end.length) {
-      for (int i = 0; i < start.length; i++) {
-        int temp = end[i] - start[i] - 1;
-        if (temp > 0 && res < (plateNum - 1)) {
-          res += temp;
-          byteSizes.add(temp);
-        } else {
-          byteSizes.add(0);
-        }
-        startA.add(start[i]);
-        endA.add(end[i]);
+  public static void calByteSize(byte[] start, byte[] end, int plateNum) {
+    for (int i = 0; i < start.length; i++) {
+      int temp = end[i] - start[i] - 1;
+      if (temp > 0 && res < (plateNum - 1)) {
+        res += temp;
+        byteSizes.add(temp);
+      } else {
+        byteSizes.add(0);
       }
+      startA.add(start[i]);
+      endA.add(end[i]);
 
-      addLastChar(plateNum);
+    }
+  }
 
-    } else if (start.length > end.length) {
+  public static byte[] paddingChar(byte[] start, byte[] end, boolean isGreater) {
+    if (isGreater) {
       byte[] tempRes = new byte[start.length];
       for (int i = 0; i < start.length; i++) {
         if (i < end.length) {
@@ -73,22 +56,8 @@ public class GetSplitTest {
           }
         }
       }
-
-      for (int i = 0; i < start.length; i++) {
-        int temp = tempRes[i] - start[i] - 1;
-        if (temp > 0 && res < (plateNum - 1)) {
-          res += temp;
-          byteSizes.add(temp);
-        } else {
-          byteSizes.add(0);
-        }
-
-        startA.add(start[i]);
-        endA.add(end[i]);
-      }
-
-      addLastChar(plateNum);
-    } else if (start.length < end.length) {
+      return tempRes;
+    } else {
       byte[] tempRes = new byte[end.length];
       for (int i = 0; i < end.length; i++) {
         if (i < start.length) {
@@ -103,19 +72,40 @@ public class GetSplitTest {
           }
         }
       }
+      return tempRes;
+    }
+  }
 
-      for (int i = 0; i < end.length; i++) {
-        int temp = end[i] - tempRes[i] - 1;
-        if (temp > 0 && res < (plateNum - 1)) {
-          res += temp;
-          byteSizes.add(temp);
-        } else {
-          byteSizes.add(0);
-        }
+  public static List<byte[]> getSplitKeyValues(byte[] start, byte[] end, int startSplitPoint,
+      int splitStep, int plateNum) {
+    List<byte[]> resultSplitKeys = new ArrayList<>();
 
-        startA.add(tempRes[i]);
-        endA.add(end[i]);
-      }
+    if (start.length == 0 && end.length == 0) {
+      return resultSplitKeys;
+    }
+    // 拆分块数小于2 不拆分
+    if (plateNum < 2) {
+      return resultSplitKeys;
+    }
+
+//    List<Integer> byteSizes = new ArrayList<>();
+
+//    List<Byte> startA = new ArrayList<>();
+//    List<Byte> endA = new ArrayList<>();
+    if (start.length == end.length) {
+      calByteSize(start, end, plateNum);
+
+      addLastChar(plateNum);
+
+    } else if (start.length > end.length) {
+      byte[] tempRes = paddingChar(start, end, true);
+
+      calByteSize(start, tempRes, plateNum);
+
+      addLastChar(plateNum);
+    } else if (start.length < end.length) {
+      byte[] tempRes = paddingChar(start, end, false);
+      calByteSize(tempRes, end, plateNum);
       addLastChar(plateNum);
 
     }
@@ -137,7 +127,7 @@ public class GetSplitTest {
           }
         }
         aa = temp;
-        if (resultSplitKeys.size() >= (plateNum -1)) {
+        if (resultSplitKeys.size() >= (plateNum - 1)) {
           break;
         }
         resultSplitKeys.add(temp);
@@ -397,7 +387,7 @@ public class GetSplitTest {
     System.out.println(calculateSplitPlateTimes(10, 11));
 //    byte[] a = Bytes.toBytes("1-bcd");
 //    byte[] a = Bytes.toBytes("1-bcd");
-    byte[] a = Bytes.toBytes("a");
+    byte[] a = Bytes.toBytes("aaa");
 //    byte[] a = Bytes.toBytes("ab");
     byte[] c = new byte[5];
     for (int i = 0; i < a.length; i++) {
@@ -405,7 +395,7 @@ public class GetSplitTest {
     }
 //    byte[] b = Bytes.toBytes("1-efg");
 //    byte[] b = Bytes.toBytes("2");
-    byte[] b = Bytes.toBytes("bcc");
+    byte[] b = Bytes.toBytes("b");
 //    byte[] b = Bytes.toBytes("cd");
     String s = Bytes.toString(a);
     int p = 10;
