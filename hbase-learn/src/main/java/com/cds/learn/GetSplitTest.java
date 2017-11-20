@@ -387,19 +387,18 @@ public class GetSplitTest {
         System.out.println(calculateSplitPlateTimes(10, 11));
         //    byte[] a = Bytes.toBytes("1-bcd");
         //    byte[] a = Bytes.toBytes("1-bcd");
-        byte[] a = Bytes.toBytes("12");
+        byte[] a = Bytes.toBytes("1200");
         //    byte[] a = Bytes.toBytes("ab");
-        byte[] c = new byte[5];
-        for (int i = 0; i < a.length; i++) {
-            c[i] = (byte) (a[i] + 1);
-        }
         //    byte[] b = Bytes.toBytes("1-efg");
         //    byte[] b = Bytes.toBytes("2");
-        byte[] b = Bytes.toBytes("13");
+        byte[] b = Bytes.toBytes("3443");
         //    byte[] b = Bytes.toBytes("cd");
         String s = Bytes.toString(a);
         int p = 10;
-        List<byte[]> bytes = getSplitKeyValues(a, b, 0, 3, p, true);
+        List<byte[]> bytes = getSplitKeyValues(a, b, 0, 2, 10, false);
+        for (byte[] temp : bytes) {
+            System.out.println(Bytes.toString(temp));
+        }
 
     }
 
