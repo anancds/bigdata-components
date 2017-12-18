@@ -395,7 +395,7 @@ public class GetSplitTest {
         //    byte[] b = Bytes.toBytes("cd");
         String s = Bytes.toString(a);
         int p = 10;
-        List<byte[]> bytes = getSplitKeyValues(a, b, 0, 2, 10, false);
+        List<byte[]> bytes = getSplitKeyValues(a, b, 0, 2, 10, true);
         for (byte[] temp : bytes) {
             System.out.println(Bytes.toString(temp));
         }
