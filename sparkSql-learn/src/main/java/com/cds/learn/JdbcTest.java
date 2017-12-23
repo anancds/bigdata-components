@@ -14,11 +14,11 @@ public class JdbcTest {
         float f1 = 252.99f;
         System.out.println((double) f1);
         Class.forName("org.apache.hive.jdbc.HiveDriver");
-        Connection conn = DriverManager.getConnection("jdbc:hive2://vsp1:10007", "root", "123456");
+        Connection conn = DriverManager.getConnection("jdbc:hive2://ude244:10007", "root", "hik12345");
         //        String sql = "select count(rowKey),dat from test_ZG03 group by dat ";
         for (int j = 0; j < 1; j++) {
 
-            String sql = "select * from HIK_SMART_METADATA limit 10000";
+            String sql = "select * from testTable limit 10000";
             HivePreparedStatement pstat = (HivePreparedStatement) conn.prepareStatement(sql);
             HiveQueryResultSet rs = (HiveQueryResultSet) pstat.executeQuery();
             ResultSetMetaData meta = rs.getMetaData();
