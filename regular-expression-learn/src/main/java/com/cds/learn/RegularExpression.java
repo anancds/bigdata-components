@@ -1,5 +1,6 @@
 package com.cds.learn;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,18 +35,30 @@ public class RegularExpression {
     }
 
     private static void test3() {
-        String s = "( a b), (fsd)";
+        String s = "'[(separationStartTime \"   2017-12-16 00:00:00\",separationEndTime \"2017-12-19 00:00:00\",separationTimeInterval \"day:1\")]'";
         Pattern pattern = Pattern.compile("(?<=\\()[^\\)]+");
         Matcher matcher = pattern.matcher(s);
         System.out.println(matcher.groupCount());
-        while(matcher.find()){
+        while (matcher.find()) {
             System.out.println(matcher.group());
+            String res = matcher.group();
+            String[] temps = res.split(",");
+            System.out.println(Arrays.toString(temps));
+            int index1 = temps[0].indexOf("\"");
+            int index2 = temps[0].lastIndexOf("\"");
+            int index3 = temps[1].indexOf("\"");
+            int index4 = temps[1].lastIndexOf("\"");
+            int index5 = temps[2].indexOf("\"");
+            int index6 = temps[2].lastIndexOf("\"");
+            System.out.println(temps[0].substring(index1 +1, index2).trim());
+            System.out.println(temps[1].substring(index3 +1, index4).trim());
+            System.out.println(temps[2].substring(index5 +1, index6).trim());
         }
     }
 
     public static void main(String[] args) {
 
-//        test1();
+        //        test1();
         //    test2();
         test3();
     }
