@@ -27,6 +27,7 @@
     <module>sparkSql-learn</module>
     <module>apache-learn</module>
     <module>hbase-learn</module>
+      <module>jvm-learn</module>
   </modules>
 
 
