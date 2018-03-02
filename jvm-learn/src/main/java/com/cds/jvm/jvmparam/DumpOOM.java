@@ -2,6 +2,9 @@ package com.cds.jvm.jvmparam;
 
 import java.util.Vector;
 
+/**
+ * -Xmx20m -Xms5m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=a.dump
+ */
 public class DumpOOM {
 
     public static void main(String[] args) {
