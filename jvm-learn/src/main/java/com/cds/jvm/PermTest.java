@@ -1,9 +1,8 @@
 package com.cds.jvm;
 
-import com.cds.jvm.cglib.CglibBean;
-
-import java.util.HashMap;
-
+/**
+ * -XX:+PrintVMOptions -XX:+PrintCommandLineFlags -XX:+PrintFlagsFinal
+ */
 public class PermTest {
 
     public static void main(String[] args) {
