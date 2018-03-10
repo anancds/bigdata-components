@@ -13,8 +13,8 @@ public class SoftRef {
     public static void main(String[] args) {
 
         User u = new User(1, "cds");
-        WeakReference<User> userSoftReference = new WeakReference<>(u);
-//        SoftReference<User> userSoftReference = new SoftReference<>(u);
+//        WeakReference<User> userSoftReference = new WeakReference<>(u);
+        SoftReference<User> userSoftReference = new SoftReference<>(u);
         u = null;
 
         System.out.println(userSoftReference.get());
@@ -22,8 +22,9 @@ public class SoftRef {
         System.out.println("after gc");
         System.out.println(userSoftReference.get());
 //        byte[] b = new byte[1024 * 1024 * 6];
-//        byte[] b = new byte[1024 * 950 * 6];
-//        System.gc();
+        System.out.println(Runtime.getRuntime().totalMemory());
+        byte[] b = new byte[70958992];
+        System.gc();
         System.out.println(userSoftReference.get());
 
     }
